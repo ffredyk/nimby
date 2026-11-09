@@ -1,0 +1,181 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Nimby.App.Views.AboutView">
+
+    <UserControl.Styles>
+        <Style Selector="Button.link">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="#F0B429" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style Selector="Button.link:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="TextBlock.Foreground" Value="#FFC94A" />
+        </Style>
+
+        <Style Selector="Button.linkrow">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="8,6" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+        <Style Selector="Button.linkrow:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1F242C" />
+        </Style>
+
+        <Style Selector="TextBlock.bullet">
+            <Setter Property="Foreground" Value="#F0B429" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Width" Value="14" />
+        </Style>
+
+        <Style Selector="TextBlock.feature">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer>
+        <StackPanel Spacing="12" Margin="4">
+
+            <!-- Hero: product icon, name, version, build stamp, tagline. -->
+            <Border Classes="card">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="18">
+                    <Image Grid.Column="0" Source="avares://Nimby/Assets/nimby-256.png"
+                           Width="96" Height="96" VerticalAlignment="Center"
+                           RenderOptions.BitmapInterpolationMode="HighQuality" />
+                    <StackPanel Grid.Column="1" Spacing="5" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Classes="h1" Text="Nimby" FontSize="26" VerticalAlignment="Center" />
+                            <Border Background="#1F242C" BorderBrush="#2C333D" BorderThickness="1"
+                                    CornerRadius="10" Padding="9,2" VerticalAlignment="Center">
+                                <TextBlock x:Name="VersionText" FontSize="11" Foreground="#F0B429"
+                                           Classes="mono" Text="0.0.0" />
+                            </Border>
+                        </StackPanel>
+                        <TextBlock x:Name="BuildText" Classes="muted" FontSize="11" Text="" />
+                        <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" MaxWidth="620"
+                                   HorizontalAlignment="Left"
+                                   Text="Arma 3 addon manager for Swifty repositories. Installs mods from any compatible repo, reuses what Steam already downloaded, and never writes the same byte to disk twice." />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid ColumnDefinitions="*,330" ColumnSpacing="12">
+
+                <!-- What it does -->
+                <Border Grid.Column="0" Classes="card">
+                    <StackPanel Spacing="8">
+                        <TextBlock Classes="h2" Text="What it does" />
+                        <Grid ColumnDefinitions="14,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                              RowSpacing="6">
+                            <TextBlock Grid.Row="0" Grid.Column="0" Classes="bullet" Text="•" />
+                            <TextBlock Grid.Row="0" Grid.Column="1" Classes="feature"
+                                       Text="Reads and writes standard Swifty repositories — existing repos keep working unchanged." />
+                            <TextBlock Grid.Row="1" Grid.Column="0" Classes="bullet" Text="•" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" Classes="feature"
+                                       Text="Reuses Steam Workshop content by hardlink or junction instead of downloading it again." />
+                            <TextBlock Grid.Row="2" Grid.Column="0" Classes="bullet" Text="•" />
+                            <TextBlock Grid.Row="2" Grid.Column="1" Classes="feature"
+                                       Text="Keeps one shared mod store, so a file that exists in one repository is linked into the others." />
+                            <TextBlock Grid.Row="3" Grid.Column="0" Classes="bullet" Text="•" />
+                            <TextBlock Grid.Row="3" Grid.Column="1" Classes="feature"
+                                       Text="Gives every repository its own workspace folder, with per-file tracking." />
+                            <TextBlock Grid.Row="4" Grid.Column="0" Classes="bullet" Text="•" />
+                            <TextBlock Grid.Row="4" Grid.Column="1" Classes="feature"
+                                       Text="Tracks an install index; fast update checks compare metadata, deep checks verify every byte." />
+                            <TextBlock Grid.Row="5" Grid.Column="0" Classes="bullet" Text="•" />
+                            <TextBlock Grid.Row="5" Grid.Column="1" Classes="feature"
+                                       Text="Downloads in parallel chunks with resume, then verifies each part's checksum." />
+                            <TextBlock Grid.Row="6" Grid.Column="0" Classes="bullet" Text="•" />
+                            <TextBlock Grid.Row="6" Grid.Column="1" Classes="feature"
+                                       Text="Launches Arma 3 with the exact mod set and parameters, and keeps the command line inside the Windows limit." />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Grid.Column="1" Spacing="12">
+
+                    <!-- Author mark -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="6">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <Image Source="avares://Nimby/Assets/ffredyk-128.png"
+                                       Width="64" Height="64" VerticalAlignment="Center"
+                                       RenderOptions.BitmapInterpolationMode="HighQuality" />
+                                <StackPanel Spacing="2" VerticalAlignment="Center">
+                                    <TextBlock Classes="h2" Text="Made by ffredyk" />
+                                    <TextBlock Classes="muted" FontSize="11" TextWrapping="Wrap"
+                                               Text="Built for the Arma 3 community, in the open." />
+                                </StackPanel>
+                            </StackPanel>
+                            <TextBlock Classes="muted" FontSize="10" TextWrapping="Wrap"
+                                       Text="Nimby is an independent project, not affiliated with Bohemia Interactive or the Swifty team." />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Links -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="h2" Text="Links" Margin="0,0,0,4" />
+                            <Button Classes="linkrow" Click="OnOpenWebsite" ToolTip.Tip="https://nimby.ffredyk.cz">
+                                <Grid ColumnDefinitions="72,*">
+                                    <TextBlock Grid.Column="0" Classes="muted" FontSize="11" Text="Website" />
+                                    <TextBlock Grid.Column="1" FontSize="11" Foreground="#F0B429"
+                                               Text="nimby.ffredyk.cz" TextTrimming="CharacterEllipsis" />
+                                </Grid>
+                            </Button>
+                            <Button Classes="linkrow" Click="OnOpenRepository" ToolTip.Tip="https://github.com/ffredyk/nimby">
+                                <Grid ColumnDefinitions="72,*">
+                                    <TextBlock Grid.Column="0" Classes="muted" FontSize="11" Text="GitHub" />
+                                    <TextBlock Grid.Column="1" FontSize="11" Foreground="#F0B429"
+                                               Text="github.com/ffredyk/nimby" TextTrimming="CharacterEllipsis" />
+                                </Grid>
+                            </Button>
+                            <Button Classes="linkrow" Click="OnOpenLicence" ToolTip.Tip="https://www.gnu.org/licenses/gpl-3.0.html">
+                                <Grid ColumnDefinitions="72,*">
+                                    <TextBlock Grid.Column="0" Classes="muted" FontSize="11" Text="Licence" />
+                                    <TextBlock Grid.Column="1" FontSize="11" Foreground="#F0B429"
+                                               Text="GPL-3.0-or-later" TextTrimming="CharacterEllipsis" />
+                                </Grid>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+            <!-- Licence / source obligation -->
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Classes="h2" Text="Source code" />
+                    <TextBlock Classes="feature" TextWrapping="Wrap"
+                               Text="Nimby is free software under the GNU General Public License, version 3 or later. The licence is satisfied in full: the complete corresponding source for every released build is published in the public repository, including the Rust core, the CLI and this Avalonia front end." />
+                    <Button Classes="link" Content="github.com/ffredyk/nimby" Click="OnOpenRepository"
+                            HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <!-- Third party -->
+            <Border Classes="card">
+                <StackPanel Spacing="6">
+                    <TextBlock Classes="h2" Text="Third-party" />
+                    <TextBlock Classes="feature" TextWrapping="Wrap"
+                               Text="Nimby is built with Avalonia and .NET, and with Rust crates for HTTP, hashing, JSON and parallel work. Their licences are listed in THIRD-PARTY-NOTICES.md in the repository." />
+                    <Button Classes="link" Content="THIRD-PARTY-NOTICES.md" Click="OnOpenNotices"
+                            HorizontalAlignment="Left" />
+                    <TextBlock Classes="muted" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0"
+                               Text="The Nimby name, the Nimby plate logo and the ffredyk mark are trademarks of the author and are not covered by the GPL." />
+                </StackPanel>
+            </Border>
+
+            <TextBlock x:Name="ConfigText" Classes="mono muted" FontSize="10" Text="" Margin="2,0,0,0" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

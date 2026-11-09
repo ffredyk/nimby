@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Nimby.App.Models;
 using Nimby.App.Services;
 using Nimby.App.Views;
@@ -12,14 +16,39 @@ namespace Nimby.App;
 
 public partial class MainWindow : Window
 {
+    private const string ProductIcon = "avares://Nimby/Assets/nimby-256.png";
+
     private readonly Dictionary<string, Control> _pages = new();
     private readonly Dictionary<string, Func<Task>> _refreshers = new();
     private AppState? _state;
+    private bool _capturing;
 
     public MainWindow()
     {
         InitializeComponent();
+        SetWindowIcon();
+        VersionText.Text = $"Nimby {ProductVersion()}";
         Opened += async (_, _) => await InitializeAsync();
+    }
+
+    /// <summary>"0.9.0" from the assembly version set in the project file.</summary>
+    private static string ProductVersion()
+    {
+        var version = typeof(App).Assembly.GetName().Version;
+        return version is null ? "0.0.0" : $"{version.Major}.{version.Minor}.{version.Build}";
+    }
+
+    private void SetWindowIcon()
+    {
+        try
+        {
+            using var stream = AssetLoader.Open(new Uri(ProductIcon));
+            Icon = new WindowIcon(stream);
+        }
+        catch (Exception)
+        {
+            // A missing icon must not stop the app from starting.
+        }
     }
 
     private async Task InitializeAsync()
@@ -44,20 +73,114 @@ public partial class MainWindow : Window
         RegisterPage("params", new ParamsView(_state));
         RegisterPage("stats", new StatsView(_state));
         RegisterPage("launch", new LaunchView(_state));
+        RegisterPage("about", new AboutView(_state));
 
         _state.ConfigChanged += OnConfigChanged;
 
-        CliText.Text = $"cli: {cli.Executable}";
-        VersionText.Text = $"config: {config?.ConfigPath}";
         FooterText.Text = config is null
             ? "Configuration unavailable."
             : $"workspace {config.WorkspacePath} · {(config.SharedEnabled ? "shared store on" : "shared store off")}";
 
         NavList.SelectedIndex = 0;
 
+        if (Environment.GetEnvironmentVariable("NIMBY_SMOKE_SHOTS") is { Length: > 0 } shotsDir)
+        {
+            await CaptureScreensAsync(shotsDir);
+        }
+
         if (Environment.GetEnvironmentVariable("NIMBY_SMOKE") is { } smoke && smoke.Length > 0)
         {
             await RunSmokeTestAsync(save: smoke.Equals("save", StringComparison.OrdinalIgnoreCase));
+        }
+    }
+
+    /// <summary>
+    /// Renders every page and writes a PNG per page. Used to refresh the
+    /// screenshots in docs/screenshots without touching the desktop: only this
+    /// window's own rendered frame is captured.
+    /// </summary>
+    private async Task CaptureScreensAsync(string directory)
+    {
+        var shots = new (string Tag, string File)[]
+        {
+            ("install", "01-install.png"),
+            ("repos", "02-repos.png"),
+            ("config", "03-config.png"),
+            ("params", "04-parameters.png"),
+            ("stats", "05-stats.png"),
+            ("launch", "06-launch.png"),
+            ("about", "07-about.png"),
+        };
+
+        _capturing = true;
+        try
+        {
+            Directory.CreateDirectory(directory);
+            var index = 0;
+            foreach (var (tag, file) in shots)
+            {
+                if (!_pages.TryGetValue(tag, out var page))
+                {
+                    Console.WriteLine($"shot skip {tag}: no page");
+                    continue;
+                }
+                NavList.SelectedIndex = index++;
+                PageHost.Content = page;
+                await RefreshPageAsync(tag);
+                // Two layout passes plus a delay: the pages fetch asynchronously,
+                // and the renderer needs one frame with the final layout.
+                UpdateLayout();
+                page.UpdateLayout();
+                await Task.Delay(150);
+                UpdateLayout();
+                await Task.Delay(50);
+
+                // Avalonia 12 has no TopLevel.CaptureRenderedFrame(), so render
+                // this window's own visual tree through the render target API.
+                var path = Path.Combine(directory, file);
+                if (TryCaptureFrame(path, out var size))
+                {
+                    Console.WriteLine($"shot {file} {size}");
+                }
+                else
+                {
+                    Console.WriteLine($"shot fail {file}: {size}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"shot fail: {ex}");
+        }
+        finally
+        {
+            _capturing = false;
+        }
+
+        Environment.Exit(0);
+    }
+
+    /// <summary>Renders this window (and only this window) to a PNG.</summary>
+    private bool TryCaptureFrame(string path, out string info)
+    {
+        try
+        {
+            var bounds = Bounds;
+            var scaling = RenderScaling <= 0 ? 1.0 : RenderScaling;
+            var width = Math.Max(1, (int)Math.Round(bounds.Width * scaling));
+            var height = Math.Max(1, (int)Math.Round(bounds.Height * scaling));
+            using var bitmap = new RenderTargetBitmap(
+                new PixelSize(width, height),
+                new Vector(96 * scaling, 96 * scaling));
+            bitmap.Render(this);
+            bitmap.Save(path, PngBitmapEncoderOptions.Default);
+            info = $"{width}x{height}";
+            return true;
+        }
+        catch (Exception ex)
+        {
+            info = ex.Message;
+            return false;
         }
     }
 
@@ -183,6 +306,7 @@ public partial class MainWindow : Window
         // non-throwing) UI is still visible in CI output.
         var config = _state?.Config;
         Console.WriteLine($"data cli={_state?.Cli.Executable} error={_state?.LastError ?? "(none)"}");
+        Console.WriteLine($"data windowIcon={Icon is not null} version={ProductVersion()}");
         Console.WriteLine(
             $"data repos={config?.Repos.Count ?? 0} params={config?.Params.Count ?? 0} " +
             $"shared={config?.SharedEnabled} arma={config?.ArmaValid}");
@@ -264,6 +388,11 @@ public partial class MainWindow : Window
                 return;
             }
             PageHost.Content = page;
+            if (_capturing)
+            {
+                // Screenshot mode drives navigation itself.
+                return;
+            }
             await RefreshPageAsync(tag);
         }
         catch (Exception ex)
@@ -271,4 +400,10 @@ public partial class MainWindow : Window
             FooterText.Text = ex.Message;
         }
     }
+
+    private void OnOpenWebsite(object? sender, RoutedEventArgs e) => Links.Open(Links.Website);
+
+    private void OnOpenRepository(object? sender, RoutedEventArgs e) => Links.Open(Links.Repository);
+
+    private void OnOpenLicence(object? sender, RoutedEventArgs e) => Links.Open(Links.Licence);
 }

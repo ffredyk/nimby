@@ -24,6 +24,8 @@ public static class CliExitCodes
 /// </summary>
 public sealed class CliRunner
 {
+    private static readonly System.Text.UTF8Encoding Utf8 = new(encoderShouldEmitUTF8Identifier: false);
+
     private readonly string _executable;
 
     public CliRunner(string executable) => _executable = executable;
@@ -41,6 +43,9 @@ public sealed class CliRunner
         }
 
         var appDir = AppContext.BaseDirectory;
+        // The portable release keeps the CLI in bin\ next to the GUI.
+        candidates.Add(Path.Combine(appDir, "bin", "nimby.exe"));
+        candidates.Add(Path.Combine(appDir, "bin", "nimby"));
         candidates.Add(Path.Combine(appDir, "nimby.exe"));
         candidates.Add(Path.Combine(appDir, "nimby"));
 
@@ -99,6 +104,11 @@ public sealed class CliRunner
             RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true,
+            // nimby writes UTF-8. Without pinning the encoding, redirected output is
+            // decoded with the ANSI code page and "·" arrives as "Â·".
+            StandardOutputEncoding = Utf8,
+            StandardErrorEncoding = Utf8,
+            StandardInputEncoding = Utf8,
         };
         foreach (var arg in args)
         {

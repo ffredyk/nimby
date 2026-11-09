@@ -1,10 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <!-- The CLI ships as bin\nimby.exe, so the GUI must not be called nimby.exe
+         too: Windows would treat both names as the same file. -->
+    <AssemblyName>Nimby</AssemblyName>
+    <RootNamespace>Nimby.App</RootNamespace>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+
+    <!-- Release metadata. Keep the version in step with Cargo.toml. -->
+    <Version>0.9.0</Version>
+    <AssemblyVersion>0.9.0.0</AssemblyVersion>
+    <FileVersion>0.9.0.0</FileVersion>
+    <AssemblyTitle>Nimby</AssemblyTitle>
+    <Product>Nimby</Product>
+    <Company>ffredyk</Company>
+    <Authors>ffredyk</Authors>
+    <Copyright>Copyright (C) 2026 ffredyk — GPL-3.0-or-later</Copyright>
+    <RepositoryUrl>https://github.com/ffredyk/nimby</RepositoryUrl>
+    <PackageProjectUrl>https://nimby.ffredyk.cz</PackageProjectUrl>
+    <Description>Arma 3 addon manager, Swifty repository compatible, Workshop aware.</Description>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Branding assets live at the repository root so the installer, the
+         README and the app all use the same files. -->
+    <ApplicationIcon>..\..\assets\branding\nimby.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="..\..\assets\branding\nimby-512.png" Link="Assets\nimby-512.png" />
+    <AvaloniaResource Include="..\..\assets\branding\nimby-256.png" Link="Assets\nimby-256.png" />
+    <AvaloniaResource Include="..\..\assets\branding\ffredyk-64.png" Link="Assets\ffredyk-64.png" />
+    <AvaloniaResource Include="..\..\assets\branding\ffredyk-128.png" Link="Assets\ffredyk-128.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="12.1.5" />

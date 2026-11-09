@@ -169,16 +169,102 @@ pub fn swifty_settings_path() -> PathBuf {
     base.join("Swifty").join("Settings.json")
 }
 
-pub fn config_path() -> PathBuf {
-    // `NIMBY_CONFIG` lets portable installs and tests use another file without
-    // touching the user's real configuration.
-    if let Some(path) = std::env::var_os("NIMBY_CONFIG") {
-        let path = PathBuf::from(path);
-        if !path.as_os_str().is_empty() {
-            return path;
+/// Where [`config_path`] takes the configuration file from.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ConfigLocation {
+    /// `NIMBY_CONFIG` points at an explicit file.
+    Environment,
+    /// The executable sits in a writable folder, so its `data` folder is used.
+    Portable,
+    /// The regular per-user configuration folder.
+    UserProfile,
+}
+
+impl ConfigLocation {
+    /// Stable, machine readable name for reports and the CLI snapshot.
+    pub fn as_str(self) -> &'static str {
+        match self {
+            ConfigLocation::Environment => "environment",
+            ConfigLocation::Portable => "portable",
+            ConfigLocation::UserProfile => "user-profile",
         }
     }
-    config_dir().join("config.json")
+}
+
+fn env_config_path() -> Option<PathBuf> {
+    // `NIMBY_CONFIG` lets portable installs and tests use another file without
+    // touching the real user configuration.
+    std::env::var_os("NIMBY_CONFIG")
+        .map(PathBuf::from)
+        .filter(|path| !path.as_os_str().is_empty())
+}
+
+/// `<exe dir>\data`, when that folder exists or can be created and written to.
+/// The portable release keeps the GUI in the root folder and the CLI in `bin\`,
+/// so a CLI launched from there shares the same `data` folder.
+fn portable_dir_for(exe_dir: &Path) -> Option<PathBuf> {
+    let in_bin = exe_dir
+        .file_name()
+        .map(|name| name.eq_ignore_ascii_case("bin"))
+        .unwrap_or(false);
+    let candidates = if in_bin {
+        match exe_dir.parent() {
+            Some(parent) => vec![parent.join("data"), exe_dir.join("data")],
+            None => vec![exe_dir.join("data")],
+        }
+    } else {
+        vec![exe_dir.join("data")]
+    };
+    candidates.into_iter().find(|dir| data_dir_is_writable(dir))
+}
+
+/// Create `dir` and write a marker into it: only a real write tells whether the
+/// install folder is read-only, as with a build under Program Files.
+fn data_dir_is_writable(dir: &Path) -> bool {
+    if fs::create_dir_all(dir).is_err() {
+        return false;
+    }
+    let marker = dir.join(format!(".nimby-write-test-{}", std::process::id()));
+    let writable = fs::write(&marker, b"").is_ok();
+    let _ = fs::remove_file(&marker);
+    writable
+}
+
+/// Location and file of the configuration, resolved on every call.
+fn resolved_config() -> (ConfigLocation, PathBuf) {
+    if let Some(path) = env_config_path() {
+        return (ConfigLocation::Environment, path);
+    }
+    let portable = std::env::current_exe()
+        .ok()
+        .and_then(|exe| exe.parent().map(Path::to_path_buf))
+        .and_then(|dir| portable_dir_for(&dir));
+    if let Some(dir) = portable {
+        return (ConfigLocation::Portable, dir.join("config.json"));
+    }
+    (
+        ConfigLocation::UserProfile,
+        config_dir().join("config.json"),
+    )
+}
+
+/// Where the configuration file comes from.
+pub fn config_location() -> ConfigLocation {
+    resolved_config().0
+}
+
+pub fn config_path() -> PathBuf {
+    resolved_config().1
+}
+
+/// Folder that keeps data belonging to the configuration, so a portable
+/// install carries its cache in `<exe>\data` as well.
+pub fn data_dir() -> PathBuf {
+    config_path()
+        .parent()
+        .filter(|dir| !dir.as_os_str().is_empty())
+        .map(Path::to_path_buf)
+        .unwrap_or_else(config_dir)
 }
 
 impl AppConfig {
@@ -639,5 +725,62 @@ mod tests {
         assert!(!loaded.workspace_path.as_os_str().is_empty());
         assert_eq!(loaded.link_mode(), LinkMode::Auto);
         assert!(loaded.resolved_shared().is_none());
+    }
+
+    #[test]
+    fn portable_dir_used_when_executable_folder_is_writable() {
+        let dir = tempfile::tempdir().unwrap();
+        let portable = portable_dir_for(dir.path()).expect("writable folder is portable");
+        assert_eq!(portable, dir.path().join("data"));
+        assert!(portable.is_dir());
+        // The write probe must not leave its marker behind.
+        assert_eq!(fs::read_dir(&portable).unwrap().count(), 0);
+    }
+
+    #[test]
+    fn portable_dir_skipped_when_data_is_a_file() {
+        let dir = tempfile::tempdir().unwrap();
+        fs::write(dir.path().join("data"), b"not a folder").unwrap();
+        assert!(portable_dir_for(dir.path()).is_none());
+    }
+
+    #[test]
+    fn cli_in_bin_shares_the_data_folder_of_its_parent() {
+        let root = tempfile::tempdir().unwrap();
+        let bin = root.path().join("bin");
+        fs::create_dir_all(&bin).unwrap();
+        let portable = portable_dir_for(&bin).expect("the install folder is writable");
+        assert_eq!(portable, root.path().join("data"));
+        // The CLI must not create a second configuration inside bin\.
+        assert!(!bin.join("data").exists());
+    }
+
+    #[test]
+    fn cli_in_bin_falls_back_to_its_own_data_folder_when_the_parent_is_read_only() {
+        let root = tempfile::tempdir().unwrap();
+        let bin = root.path().join("bin");
+        fs::create_dir_all(&bin).unwrap();
+        // A file where the parent's data folder would go makes it unusable.
+        fs::write(root.path().join("data"), b"blocked").unwrap();
+        let portable = portable_dir_for(&bin).expect("bin itself stays writable");
+        assert_eq!(portable, bin.join("data"));
+    }
+
+    #[test]
+    fn config_location_reports_environment_when_env_var_is_set() {
+        // `NIMBY_CONFIG` is process wide, so this test restores it right away.
+        let previous = std::env::var_os("NIMBY_CONFIG");
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("custom.json");
+        std::env::set_var("NIMBY_CONFIG", &path);
+        let location = config_location();
+        let resolved = config_path();
+        match previous {
+            Some(value) => std::env::set_var("NIMBY_CONFIG", value),
+            None => std::env::remove_var("NIMBY_CONFIG"),
+        }
+
+        assert_eq!(location, ConfigLocation::Environment);
+        assert_eq!(resolved, path);
     }
 }

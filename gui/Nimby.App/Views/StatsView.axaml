@@ -9,35 +9,35 @@
                 <StackPanel Spacing="4">
                     <TextBlock Classes="muted" FontSize="11" Text="Logical size" />
                     <TextBlock x:Name="LogicalText" Classes="stat" Text="—" />
-                    <TextBlock Classes="muted" FontSize="10" Text="what it would take without links" />
+                    <TextBlock Classes="muted" FontSize="10" TextWrapping="Wrap" Text="what it would take without links" />
                 </StackPanel>
             </Border>
             <Border Grid.Column="1" Classes="card">
                 <StackPanel Spacing="4">
                     <TextBlock Classes="muted" FontSize="11" Text="On disk" />
                     <TextBlock x:Name="OnDiskText" Classes="stat" Text="—" />
-                    <TextBlock Classes="muted" FontSize="10" Text="shared store + workspace copies" />
+                    <TextBlock Classes="muted" FontSize="10" TextWrapping="Wrap" Text="shared store + workspace copies" />
                 </StackPanel>
             </Border>
             <Border Grid.Column="2" Classes="card">
                 <StackPanel Spacing="4">
                     <TextBlock Classes="muted" FontSize="11" Text="In workspace" />
                     <TextBlock x:Name="InWorkspaceText" Classes="stat" Text="—" />
-                    <TextBlock Classes="muted" FontSize="10" Text="bytes the mod folders hold" />
+                    <TextBlock Classes="muted" FontSize="10" TextWrapping="Wrap" Text="bytes the mod folders hold" />
                 </StackPanel>
             </Border>
             <Border Grid.Column="3" Classes="card">
                 <StackPanel Spacing="4">
                     <TextBlock Classes="muted" FontSize="11" Text="Downloaded" />
                     <TextBlock x:Name="DownloadedText" Classes="stat" Text="-" />
-                    <TextBlock Classes="muted" FontSize="10" Text="unique bytes from the repo" />
+                    <TextBlock Classes="muted" FontSize="10" TextWrapping="Wrap" Text="unique bytes from the repo" />
                 </StackPanel>
             </Border>
             <Border Grid.Column="4" Classes="card">
                 <StackPanel Spacing="4">
                     <TextBlock Classes="muted" FontSize="11" Text="Saved" />
                     <TextBlock x:Name="SavedText" Classes="stat" Text="—" />
-                    <TextBlock x:Name="SavedDetail" Classes="muted" FontSize="10" Text="" />
+                    <TextBlock x:Name="SavedDetail" Classes="muted" FontSize="10" TextWrapping="Wrap" Text="" />
                 </StackPanel>
             </Border>
             <Button Grid.Column="5" x:Name="RefreshButton" Content="Refresh" Click="OnRefresh"

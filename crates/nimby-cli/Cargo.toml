@@ -2,7 +2,11 @@
 name = "nimby-cli"
 version.workspace = true
 edition.workspace = true
+description = "Nimby command line interface: install, update, repair, stats and launch"
 license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
 
 [[bin]]
 name = "nimby"

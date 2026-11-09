@@ -91,7 +91,9 @@ pub fn config_snapshot(config: &AppConfig) -> Value {
 
     json!({
         "configPath": config::config_path().display().to_string(),
-        "configDir": config::config_dir().display().to_string(),
+        "configDir": config::data_dir().display().to_string(),
+        "configMode": config::config_location().as_str(),
+        "dataDir": config::data_dir().display().to_string(),
         "armaPath": config.arma_path.as_ref().map(|p| p.display().to_string()),
         "detectedArma": detected.as_ref().map(|p| p.display().to_string()),
         "effectiveArma": effective_arma.as_ref().map(|p| p.display().to_string()),
@@ -137,6 +139,13 @@ fn print_snapshot(config: &AppConfig, json_out: bool) -> Result<()> {
     };
 
     println!("config    {}", text("configPath"));
+    let config_mode = text("configMode");
+    let mode = match config_mode.as_str() {
+        "environment" => "environment (NIMBY_CONFIG)",
+        "portable" => "portable (config next to the executable)",
+        _ => "user profile",
+    };
+    println!("mode      {mode}");
     println!("arma      {}", opt("effectiveArma"));
     println!("temp      {}", text("effectiveTemp"));
     println!("shared    {}", opt("sharedPath"));

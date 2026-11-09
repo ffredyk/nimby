@@ -4,12 +4,34 @@
         Title="Nimby — Arma 3 addon manager"
         Width="1120" Height="780"
         MinWidth="900" MinHeight="600">
+
+    <Window.Styles>
+        <Style Selector="Button.link">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Foreground" Value="#F0B429" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style Selector="Button.link:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="TextBlock.Foreground" Value="#FFC94A" />
+        </Style>
+    </Window.Styles>
+
     <Grid ColumnDefinitions="216,*">
 
         <Border Grid.Column="0" Background="#12151A" BorderBrush="#1E232B" BorderThickness="0,0,1,0">
             <Grid RowDefinitions="Auto,*,Auto" Margin="14,18">
                 <StackPanel Grid.Row="0" Spacing="3">
-                    <TextBlock Text="NIMBY" Classes="h1" FontSize="22" Foreground="#F0B429" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Image Source="avares://Nimby/Assets/nimby-256.png"
+                               Width="26" Height="26" VerticalAlignment="Center"
+                               RenderOptions.BitmapInterpolationMode="HighQuality" />
+                        <TextBlock Text="NIMBY" Classes="h1" FontSize="22" Foreground="#F0B429"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
                     <TextBlock Text="Arma 3 addon manager" Classes="muted" FontSize="11" />
                     <TextBlock Text="Swifty compatible · Workshop aware" Classes="muted" FontSize="10"
                                Margin="0,2,0,0" />
@@ -22,11 +44,26 @@
                     <ListBoxItem Content="Parameters" Tag="params" />
                     <ListBoxItem Content="Stats" Tag="stats" />
                     <ListBoxItem Content="Launch" Tag="launch" />
+                    <ListBoxItem Content="About" Tag="about" />
                 </ListBox>
 
-                <StackPanel Grid.Row="2" Spacing="4">
-                    <TextBlock x:Name="VersionText" Classes="muted" FontSize="10" Text="" TextWrapping="Wrap" />
-                    <TextBlock x:Name="CliText" Classes="muted" FontSize="10" Text="" TextWrapping="Wrap" />
+                <!-- Always-visible credit: version plus author links. -->
+                <StackPanel Grid.Row="2" Spacing="3">
+                    <TextBlock x:Name="VersionText" Classes="muted" FontSize="10" Text="Nimby"
+                               TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="2">
+                        <Button Classes="link" Content="ffredyk" Click="OnOpenWebsite"
+                                ToolTip.Tip="https://nimby.ffredyk.cz" />
+                        <TextBlock Classes="muted" FontSize="10" Text="·" VerticalAlignment="Center" />
+                        <Button Classes="link" Content="nimby.ffredyk.cz" Click="OnOpenWebsite"
+                                ToolTip.Tip="https://nimby.ffredyk.cz" />
+                        <TextBlock Classes="muted" FontSize="10" Text="·" VerticalAlignment="Center" />
+                        <Button Classes="link" Content="GitHub" Click="OnOpenRepository"
+                                ToolTip.Tip="https://github.com/ffredyk/nimby" />
+                    </StackPanel>
+                    <Button Classes="link" Content="GPL-3.0-or-later" Click="OnOpenLicence"
+                            HorizontalAlignment="Left" Foreground="#6E7686"
+                            ToolTip.Tip="https://www.gnu.org/licenses/gpl-3.0.html" />
                 </StackPanel>
             </Grid>
         </Border>

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/ffredyk/nimby/security/advisories/new
+    about: Report link escapes, checksum bypasses or path traversal privately, never in a public issue.
+  - name: Installation help and questions
+    url: https://github.com/ffredyk/nimby/discussions
+    about: Ask about link modes, the shared store, Workshop reuse or migrating from Swifty.
+  - name: User tutorial
+    url: https://nimby.ffredyk.cz
+    about: The screenshot walk-through, troubleshooting table and CLI crash course.

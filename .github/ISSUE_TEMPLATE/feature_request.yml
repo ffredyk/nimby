@@ -1,0 +1,54 @@
+name: Feature request
+description: Suggest something Nimby should do — a new command, a UI improvement, better reuse.
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Nimby aims to stay a small, fast installer: reuse what is already on disk,
+        download once, verify everything. Ideas that fit that goal are the easiest to
+        accept.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you hitting?
+      description: Describe the situation, not the solution — for example "my repo has two mods sharing 3 GB and I download it twice".
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: What you would like Nimby to do
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where should it live?
+      options:
+        - CLI
+        - GUI
+        - Both
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+      description: Including what Swifty does today, if anything.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and the roadmap in PLAN.md.
+          required: true

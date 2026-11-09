@@ -111,7 +111,7 @@ pub fn cmd_install(
         .clamp(1, 16);
 
     // Persistent hash cache: unchanged Workshop/store files are not rehashed.
-    let cache_path = config::config_dir().join("hashcache.json");
+    let cache_path = config::data_dir().join("hashcache.json");
     let cache = std::sync::Mutex::new(HashCache::load(&cache_path));
 
     let http = crate::publish::repo_http(&repo_url)?;
@@ -1008,7 +1008,7 @@ pub fn installed_mods(workspace: &Path) -> Result<Vec<InstalledMod>> {
 
 pub fn cmd_update(check: bool, deep: bool, json_out: bool) -> Result<()> {
     let config = load_config()?;
-    let cache_path = config::config_dir().join("hashcache.json");
+    let cache_path = config::data_dir().join("hashcache.json");
     let cache = std::sync::Mutex::new(HashCache::load(&cache_path));
     let mut installed = Vec::new();
     let mut folders = Vec::new();
@@ -1185,7 +1185,7 @@ pub fn cmd_update(check: bool, deep: bool, json_out: bool) -> Result<()> {
 
 pub fn cmd_repair(json_out: bool) -> Result<()> {
     let config = load_config()?;
-    let cache_path = config::config_dir().join("hashcache.json");
+    let cache_path = config::data_dir().join("hashcache.json");
     let cache = std::sync::Mutex::new(HashCache::load(&cache_path));
 
     let mut broken: Vec<(String, String, PathBuf)> = Vec::new();
@@ -1884,6 +1884,13 @@ pub fn cmd_doctor(json_out: bool) -> Result<()> {
     if !running.is_empty() {
         println!("running {}", running.join(", "));
     }
+    // Attribution + GPL source offer: shown by the diagnostic command so it is
+    // always one command away.
+    println!(
+        "nimby   {} · GPL-3.0-or-later · © 2026 ffredyk",
+        env!("CARGO_PKG_VERSION")
+    );
+    println!("        https://nimby.ffredyk.cz · https://github.com/ffredyk/nimby");
     Ok(())
 }
 

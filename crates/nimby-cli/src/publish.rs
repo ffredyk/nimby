@@ -62,7 +62,7 @@ fn load_manifest(dir: &Path, srf: Option<&Path>) -> Result<ModManifest> {
 
 pub fn cmd_verify(dir: &Path, srf: Option<&Path>, strict: bool, json_out: bool) -> Result<()> {
     let manifest = load_manifest(dir, srf)?;
-    let cache_path = nimby_core::config::config_dir().join("hashcache.json");
+    let cache_path = nimby_core::config::data_dir().join("hashcache.json");
     let cache = std::sync::Mutex::new(HashCache::load(&cache_path));
     let report = nimby_core::verify::verify_dir_cached(&manifest, dir, Some(&cache))?;
     if let Ok(mut cache) = cache.lock() {
@@ -280,9 +280,11 @@ pub fn cmd_inspect(
     let selected = split_list(mods);
 
     let images = if with_images {
+        // The artwork cache follows the configuration: next to the executable in
+        // a portable install, otherwise under the user profile.
         Some(graphics::fetch_images(
             &http,
-            &nimby_core::config::config_dir(),
+            &nimby_core::config::data_dir(),
         )?)
     } else {
         None

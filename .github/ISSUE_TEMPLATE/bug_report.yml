@@ -1,0 +1,113 @@
+name: Bug report
+description: Something in Nimby does not work — installs, links, updates, the GUI or the CLI.
+title: "bug: "
+labels: ["bug", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. The more of this you can fill in, the faster it can be
+        fixed. Please do not paste repository passwords or Steam credentials.
+
+        Security problems go to [SECURITY.md](https://github.com/ffredyk/nimby/blob/main/SECURITY.md),
+        not here.
+
+  - type: input
+    id: version
+    attributes:
+      label: Nimby version
+      description: Output of `nimby --version`, or the zip name you downloaded.
+      placeholder: 0.9.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where does it happen?
+      options:
+        - GUI (Nimby.exe)
+        - CLI (nimby.exe)
+        - Both
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected, and what actually happened.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Add repository ...
+        2. Select mods ...
+        3. Press Install
+        4. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: doctor
+    attributes:
+      label: nimby doctor
+      description: |
+        Run `nimby doctor` (add `--json` for the machine-readable form) and paste the
+        output. It reports Steam, Arma, link support, the config location and the
+        store.
+      render: text
+    validations:
+      required: false
+
+  - type: dropdown
+    id: install-mode
+    attributes:
+      label: Link mode in use
+      description: Configuration page, or `nimby status --json` → `mode`.
+      options:
+        - auto
+        - dir-link
+        - overlay
+        - copy
+        - passthrough
+        - not sure
+    validations:
+      required: false
+
+  - type: input
+    id: storage
+    attributes:
+      label: Where the workspace lives
+      description: Volume type and free space help a lot — links behave differently on NTFS, exFAT and network shares.
+      placeholder: NTFS internal SSD, E:\Nimby, 40 GB free
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: |
+        GUI — the log panel on the Install page. CLI — run the same command with
+        `nimby install --progress json`, which prints one event per line. Trim to the
+        part that fails; a few dozen lines are usually enough.
+      render: text
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues.
+          required: true
+        - label: I removed repository credentials and personal paths from what I pasted.
+          required: true
+        - label: This is not a security problem (those go through SECURITY.md).
+          required: true

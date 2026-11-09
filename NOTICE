@@ -1,0 +1,55 @@
+Nimby
+Copyright (C) 2026 ffredyk
+https://nimby.ffredyk.cz · https://github.com/ffredyk/nimby
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program; see the LICENSE file. If not, see
+https://www.gnu.org/licenses/gpl-3.0.html.
+
+Source code
+-----------
+
+The complete corresponding source code of every released Nimby binary is
+published at https://github.com/ffredyk/nimby. That public repository satisfies
+the source-offer requirement of GPL-3.0 section 6 for the binaries distributed
+from its Releases page. The Rust workspace, the Avalonia front end, the build
+and packaging scripts and the documentation are all part of it.
+
+Brand assets
+------------
+
+The name "Nimby", the Nimby app icon (assets/branding/nimby-icon.jpg and the
+derived nimby-*.png / nimby.ico files) and the ffredyk mark
+(assets/branding/ffredyk-logo.png and the derived ffredyk-*.png files) are brand
+assets of the author and are NOT covered by the GNU General Public License.
+
+They may be used to refer to, or to redistribute, unmodified Nimby builds that
+come from this project. Any other use — especially modified or rebranded builds,
+or use of the marks as the identity of a different product — requires written
+permission from the author. The marks are separable assets: the GPL program can
+be rebuilt without them (see assets/branding/README.md), and this reservation
+does not reduce the freedom the GPL grants over the source code.
+
+Third-party components
+----------------------
+
+Nimby links against open-source libraries: .NET and Avalonia (MIT), the Inter
+typeface (SIL OFL 1.1) and the Rust crates listed in THIRD-PARTY-NOTICES.md,
+together with the licence texts in LICENSES/. Those components stay under their
+own licences.
+
+Not affiliated
+--------------
+
+Bohemia Interactive, Arma 3 and Steam are trademarks of their respective owners.
+Nimby is an independent project and is not affiliated with, endorsed by or
+supported by Bohemia Interactive, Valve or the Swifty team.
