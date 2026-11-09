@@ -79,7 +79,7 @@ URL; it must point at that folder, not at the website in general.
 *The Repositories page: add form on top, the list on the left, details on the right.*
 
 **One repository, one folder.** The workspace root is a container, not an install
-target: every repository installs into its own subfolder (`E:\Nimby\Synixe`,
+target: every repository installs into its own subfolder (`E:\Nimby\ExampleRepo`,
 `E:\Nimby\OtherCommunity`), so two communities never mix and update independently.
 Names are cleaned to letters, digits, `_`, `.` and `-`; anything else becomes `-`, and
 two repositories never share a folder: the second one gets a `-2` suffix.
@@ -358,7 +358,7 @@ nimby store prune
 nimby stats --json
 nimby status
 nimby doctor
-nimby launch --server Contracts --dry-run
+nimby launch --server "Example Public" --dry-run
 ```
 
 `nimby config`, `nimby config set`, `nimby repo …` and `nimby migrate` are shown in

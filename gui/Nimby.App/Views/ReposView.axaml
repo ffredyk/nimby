@@ -72,7 +72,7 @@
                                 <TextBlock Classes="muted" FontSize="11" Text="Subfolder of the workspace root" />
                                 <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
                                     <TextBox Grid.Column="0" x:Name="RepoPathBox"
-                                             PlaceholderText="Folder name, for example Synixe" />
+                                             PlaceholderText="Folder name, for example Example-Repo" />
                                     <Button Grid.Column="1" Content="Hint" Click="OnBrowseRepoPath" />
                                     <Button Grid.Column="2" x:Name="SavePathButton" Classes="accent"
                                             Content="Apply" Click="OnApplyRepoPath" />

@@ -94,7 +94,7 @@ one-by-one vs 5.2 s with two at a time.
 
 ```
 E:\Nimby\                              workspace root
-  Synixe-Contractors\                  one repository, fully isolated
+  Example-Repo\                        one repository, fully isolated
     @cba_ws\                           mod folder (hardlinks / junction)
     .nimby\<mod>.json                  provenance: repo, checksum, mode, sources
     .nimby\tracking.json               per-file index (origin, location, size+mtime)
