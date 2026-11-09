@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -63,9 +64,10 @@ public sealed class CliRunner
             candidates.Add(Path.Combine(folder, "nimby"));
         }
 
+        var self = Environment.ProcessPath;
         foreach (var candidate in candidates)
         {
-            if (File.Exists(candidate))
+            if (File.Exists(candidate) && !IsSelf(candidate, self))
             {
                 return new CliRunner(candidate);
             }
@@ -73,6 +75,31 @@ public sealed class CliRunner
 
         throw new FileNotFoundException(
             "nimby.exe not found. Build it with `cargo build --release` or set NIMBY_CLI.");
+    }
+
+    /// <summary>
+    /// Windows paths are case-insensitive, so `Nimby.exe` (the GUI) also answers to
+    /// `nimby.exe`. Without this guard the GUI would spawn itself as the "CLI", and
+    /// every clone would spawn another one.
+    /// </summary>
+    private static bool IsSelf(string candidate, string? self)
+    {
+        if (string.IsNullOrEmpty(self))
+        {
+            return false;
+        }
+
+        try
+        {
+            return string.Equals(
+                Path.GetFullPath(candidate),
+                Path.GetFullPath(self),
+                StringComparison.OrdinalIgnoreCase);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     public sealed record RunResult(int ExitCode, string StdOut, string StdErr)
@@ -114,6 +141,17 @@ public sealed class CliRunner
         {
             start.ArgumentList.Add(arg);
         }
+
+        // Smoke-test switches drive the GUI only. Handing them to the CLI would make a
+        // misdetected executable re-run a smoke pass and spawn clones in a loop.
+        foreach (var key in start.Environment.Keys.ToList())
+        {
+            if (key.StartsWith("NIMBY_SMOKE", StringComparison.OrdinalIgnoreCase))
+            {
+                start.Environment.Remove(key);
+            }
+        }
+
         return new CliSession(start, onLine);
     }
 

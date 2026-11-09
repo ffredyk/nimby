@@ -155,6 +155,9 @@ public partial class InstallView : UserControl, IRefreshable
             _rowsByName[mod.Name] = mod;
         }
         UpdateHeader();
+        // A refresh rebuilds the row objects; repaint them from the folded event
+        // state so a finished run keeps showing its result instead of resetting.
+        ApplyRows();
         StatusLine.Text = _mods.Count == 0
             ? "Repository has no mods."
             : $"{_mods.Count} mods · {ModRow.FormatBytes(_snapshot.TotalBytes)}";

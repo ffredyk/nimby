@@ -58,6 +58,14 @@ repositories, shipping as a portable Windows application (GUI plus CLI).
   the website and source links, and a credit line in the GUI and in
   `nimby doctor`.
 
+### Fixed
+
+- The GUI could launch copies of itself instead of the installer: Windows resolves
+  `nimby.exe` to `Nimby.exe` in the same folder, so the CLI lookup now skips the
+  running executable, and the CLI no longer inherits the GUI smoke switches.
+- Per-mod progress no longer resets to zero when the mod list refreshes after an
+  install completes.
+
 ### Performance
 
 - Cold-cache install of `@cba_ws`, `@cba_rf` and `@pulau` went from 78 s with
