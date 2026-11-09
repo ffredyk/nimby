@@ -1,0 +1,91 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="using:Nimby.App.Models"
+             x:Class="Nimby.App.Views.StatsView">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12" Margin="4">
+
+        <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*,Auto" ColumnSpacing="12">
+            <Border Grid.Column="0" Classes="card">
+                <StackPanel Spacing="4">
+                    <TextBlock Classes="muted" FontSize="11" Text="Logical size" />
+                    <TextBlock x:Name="LogicalText" Classes="stat" Text="—" />
+                    <TextBlock Classes="muted" FontSize="10" Text="what it would take without links" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Classes="card">
+                <StackPanel Spacing="4">
+                    <TextBlock Classes="muted" FontSize="11" Text="On disk" />
+                    <TextBlock x:Name="OnDiskText" Classes="stat" Text="—" />
+                    <TextBlock Classes="muted" FontSize="10" Text="shared store + workspace copies" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Classes="card">
+                <StackPanel Spacing="4">
+                    <TextBlock Classes="muted" FontSize="11" Text="In workspace" />
+                    <TextBlock x:Name="InWorkspaceText" Classes="stat" Text="—" />
+                    <TextBlock Classes="muted" FontSize="10" Text="bytes the mod folders hold" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="3" Classes="card">
+                <StackPanel Spacing="4">
+                    <TextBlock Classes="muted" FontSize="11" Text="Downloaded" />
+                    <TextBlock x:Name="DownloadedText" Classes="stat" Text="-" />
+                    <TextBlock Classes="muted" FontSize="10" Text="unique bytes from the repo" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="4" Classes="card">
+                <StackPanel Spacing="4">
+                    <TextBlock Classes="muted" FontSize="11" Text="Saved" />
+                    <TextBlock x:Name="SavedText" Classes="stat" Text="—" />
+                    <TextBlock x:Name="SavedDetail" Classes="muted" FontSize="10" Text="" />
+                </StackPanel>
+            </Border>
+            <Button Grid.Column="5" x:Name="RefreshButton" Content="Refresh" Click="OnRefresh"
+                    VerticalAlignment="Center" />
+        </Grid>
+
+        <Border Grid.Row="1" Classes="card">
+            <StackPanel Spacing="4">
+                <TextBlock x:Name="WorkspaceText" Classes="mono" FontSize="11" Text="" />
+                <TextBlock x:Name="StoreText" Classes="muted" FontSize="11" Text="" />
+                <TextBlock x:Name="TrackingText" Classes="muted" FontSize="11" Text="" />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="2" Classes="card">
+            <Grid RowDefinitions="Auto,*">
+                <Grid Grid.Row="0" ColumnDefinitions="*,60,100,100,100,100,100" Margin="0,0,0,8">
+                    <TextBlock Grid.Column="0" Classes="h2" Text="Per repository" />
+                    <TextBlock Grid.Column="1" Classes="muted" FontSize="11" Text="mods" />
+                    <TextBlock Grid.Column="2" Classes="muted" FontSize="11" Text="logical" />
+                    <TextBlock Grid.Column="3" Classes="muted" FontSize="11" Text="on disk" />
+                    <TextBlock Grid.Column="4" Classes="muted" FontSize="11" Text="workspace" />
+                    <TextBlock Grid.Column="5" Classes="muted" FontSize="11" Text="downloaded" />
+                    <TextBlock Grid.Column="6" Classes="muted" FontSize="11" Text="saved" />
+                </Grid>
+                <ScrollViewer Grid.Row="1">
+                    <ItemsControl x:Name="RepoList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:RepoStatsRow">
+                                <Grid ColumnDefinitions="*,60,100,100,100,100,100" Margin="0,4">
+                                    <TextBlock Grid.Column="0" Text="{Binding Repo}" FontSize="12"
+                                               TextTrimming="CharacterEllipsis" />
+                                    <TextBlock Grid.Column="1" Text="{Binding ModsText}" FontSize="12"
+                                               Classes="muted" />
+                                    <TextBlock Grid.Column="2" Text="{Binding LogicalText}" FontSize="12" />
+                                    <TextBlock Grid.Column="3" Text="{Binding OnDiskText}" FontSize="12" />
+                                    <TextBlock Grid.Column="4" Text="{Binding InWorkspaceText}" FontSize="12" />
+                                    <TextBlock Grid.Column="5" Text="{Binding DownloadedText}" FontSize="12" />
+                                    <TextBlock Grid.Column="6" Text="{Binding SavedText}" FontSize="12"
+                                               Foreground="#F0B429" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <TextBlock Grid.Row="3" x:Name="StatusLine" Classes="muted" FontSize="11" Text="" />
+    </Grid>
+</UserControl>

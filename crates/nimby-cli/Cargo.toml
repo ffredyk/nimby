@@ -1,0 +1,18 @@
+[package]
+name = "nimby-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "nimby"
+path = "src/main.rs"
+
+[dependencies]
+nimby-core = { path = "../nimby-core" }
+anyhow.workspace = true
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+walkdir.workspace = true
+tempfile.workspace = true

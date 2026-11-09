@@ -1,0 +1,131 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="using:Nimby.App.Models"
+             x:Class="Nimby.App.Views.InstallView">
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto" RowSpacing="12" Margin="4">
+
+        <Border Grid.Row="0" Classes="card">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                <Border Width="54" Height="54" CornerRadius="6" ClipToBounds="True" Background="#0E1116"
+                        VerticalAlignment="Center">
+                    <Image x:Name="IconImage" Stretch="UniformToFill" />
+                </Border>
+                <StackPanel Grid.Column="1" Spacing="4" VerticalAlignment="Center">
+                    <TextBlock x:Name="RepoName" Classes="h2" Text="No repository selected" />
+                    <TextBlock x:Name="RepoSummary" Classes="muted" FontSize="12"
+                               Text="Add a repository on the Repos tab." />
+                    <TextBlock x:Name="RepoPathText" Classes="muted" FontSize="11"
+                               TextTrimming="CharacterEllipsis" Text="" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <Button x:Name="ReloadButton" Content="Reload" Click="OnReload" />
+                    <Button x:Name="CancelButton" Content="Cancel" Click="OnCancel" IsVisible="False" />
+                    <Button x:Name="InstallButton" Classes="accent" Content="Install" Click="OnInstall" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Classes="card" x:Name="ProgressHost" IsVisible="False" Padding="14">
+            <StackPanel Spacing="8">
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock x:Name="ProgressTitle" Classes="h2" Text="Preparing…" />
+                    <TextBlock Grid.Column="1" x:Name="ProgressPercent" Classes="h2" Foreground="#F0B429"
+                               Text="" />
+                </Grid>
+                <ProgressBar x:Name="ProgressBar" Minimum="0" Maximum="100" Height="10"
+                             IsIndeterminate="True" ShowProgressText="False" />
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock x:Name="ProgressDetail" Classes="muted" FontSize="11"
+                               TextTrimming="CharacterEllipsis" Text="" />
+                    <TextBlock Grid.Column="1" x:Name="ProgressBytes" Classes="muted" FontSize="11" Text="" />
+                </Grid>
+                <Grid ColumnDefinitions="*,Auto" x:Name="ProgressActions">
+                    <TextBlock x:Name="ProgressNote" Classes="muted" FontSize="11" Text="" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                        <Button x:Name="PromptRetryButton" Content="Retry" Click="OnPromptRetry"
+                                IsVisible="False" Padding="10,4" FontSize="12" />
+                        <Button x:Name="PromptSkipButton" Content="Skip mod" Click="OnPromptSkip"
+                                IsVisible="False" Padding="10,4" FontSize="12" />
+                        <Button x:Name="PromptAbortButton" Content="Stop" Click="OnPromptAbort"
+                                IsVisible="False" Padding="10,4" FontSize="12" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="2" Classes="card" x:Name="PromptHost" IsVisible="False" Padding="14"
+                BorderBrush="#F0B429" BorderThickness="1">
+            <StackPanel Spacing="6">
+                <TextBlock x:Name="PromptTitle" Classes="h2" Foreground="#F0B429"
+                           Text="Install needs your decision" />
+                <TextBlock x:Name="PromptMessage" FontSize="12" TextWrapping="Wrap" Text="" />
+                <TextBlock Classes="muted" FontSize="10"
+                           Text="Retry the mod, skip it and continue, or stop. Nothing is lost: work so far is kept." />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="3" CornerRadius="8" ClipToBounds="True" IsVisible="False" MaxHeight="96"
+                x:Name="BannerHost">
+            <Image x:Name="BannerImage" Stretch="UniformToFill" />
+        </Border>
+
+        <Border Grid.Row="4" Classes="card">
+            <Grid RowDefinitions="Auto,*">
+                <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                    <TextBlock x:Name="ModsHeader" Classes="h2" Text="Mods" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                        <Button Content="All" Click="OnSelectAll" Padding="10,4" FontSize="12" />
+                        <Button Content="None" Click="OnSelectNone" Padding="10,4" FontSize="12" />
+                        <Button Content="Verify" Click="OnVerify" Padding="10,4" FontSize="12" />
+                        <Button Content="Status" Click="OnStatus" Padding="10,4" FontSize="12" />
+                    </StackPanel>
+                </Grid>
+                <ScrollViewer Grid.Row="1" x:Name="ModScroll">
+                    <ItemsControl x:Name="ModList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:ModRow">
+                                <Border Background="{Binding RowBackground}" CornerRadius="4"
+                                        Padding="6,4" Margin="0,2">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto"
+                                          ColumnSpacing="8">
+                                        <CheckBox Grid.RowSpan="2" Grid.Column="0"
+                                                  IsChecked="{Binding Selected, Mode=TwoWay}"
+                                                  VerticalAlignment="Center" Margin="0,0,2,0" />
+                                        <StackPanel Grid.Row="0" Grid.Column="1" Spacing="1"
+                                                    VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold"
+                                                       FontSize="13" />
+                                            <TextBlock Text="{Binding Subtitle}" Classes="muted"
+                                                       FontSize="11" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="2" Spacing="1"
+                                                    VerticalAlignment="Center" MinWidth="120">
+                                            <TextBlock Text="{Binding ProgressText}" FontSize="11"
+                                                       HorizontalAlignment="Right"
+                                                       Foreground="{Binding StatusBrush}" />
+                                            <TextBlock Text="{Binding StatusText}" FontSize="10"
+                                                       Classes="muted" HorizontalAlignment="Right"
+                                                       TextTrimming="CharacterEllipsis" MaxWidth="320" />
+                                        </StackPanel>
+                                        <ProgressBar Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                                                     Minimum="0" Maximum="100" Value="{Binding Progress}"
+                                                     Height="4" ShowProgressText="False"
+                                                     IsVisible="{Binding ShowProgress}" Margin="0,5,0,0" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <TextBlock Grid.Row="5" x:Name="StatusLine" Classes="muted" FontSize="12" Text="Ready." />
+
+        <Border Grid.Row="6" Classes="card" Padding="10" Height="150">
+            <ScrollViewer>
+                <TextBlock x:Name="LogBox" Classes="mono" TextWrapping="NoWrap" Text="" />
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

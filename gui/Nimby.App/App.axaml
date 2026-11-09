@@ -1,0 +1,100 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Nimby.App.App"
+             RequestedThemeVariant="Dark">
+
+    <Application.Styles>
+        <FluentTheme />
+
+        <!-- Palette: deep slate with an amber accent, close to the Arma menus. -->
+        <Style Selector="Window">
+            <Setter Property="Background" Value="#0F1115" />
+        </Style>
+
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="#E6E8EC" />
+        </Style>
+        <Style Selector="TextBlock.muted">
+            <Setter Property="Foreground" Value="#98A0AE" />
+        </Style>
+        <Style Selector="TextBlock.h1">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="TextBlock.h2">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="TextBlock.stat">
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#F0B429" />
+        </Style>
+        <Style Selector="TextBlock.mono">
+            <Setter Property="FontFamily" Value="Cascadia Mono, Consolas, monospace" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="#171A20" />
+            <Setter Property="BorderBrush" Value="#252A33" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="16" />
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#1F242C" />
+            <Setter Property="Foreground" Value="#E6E8EC" />
+            <Setter Property="BorderBrush" Value="#2C333D" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="14,7" />
+        </Style>
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#272E37" />
+        </Style>
+        <Style Selector="Button.accent">
+            <Setter Property="Background" Value="#F0B429" />
+            <Setter Property="Foreground" Value="#1A1405" />
+            <Setter Property="BorderBrush" Value="#F0B429" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="Button.accent:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#FFC94A" />
+        </Style>
+
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="#12151A" />
+            <Setter Property="Foreground" Value="#E6E8EC" />
+            <Setter Property="BorderBrush" Value="#2C333D" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="10,7" />
+        </Style>
+
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="#12151A" />
+            <Setter Property="Foreground" Value="#E6E8EC" />
+            <Setter Property="BorderBrush" Value="#2C333D" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="10,6" />
+        </Style>
+
+        <Style Selector="ListBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        <Style Selector="ListBoxItem">
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="10,8" />
+        </Style>
+
+        <Style Selector="TabControl">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TabItem">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="16,10" />
+        </Style>
+    </Application.Styles>
+</Application>

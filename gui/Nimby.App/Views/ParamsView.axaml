@@ -1,0 +1,77 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="using:Nimby.App.Models"
+             x:Class="Nimby.App.Views.ParamsView">
+    <Grid ColumnDefinitions="*,340" ColumnSpacing="12" RowDefinitions="*,Auto" RowSpacing="12" Margin="4">
+
+        <Border Grid.Row="0" Grid.Column="0" Classes="card">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Row="0" Spacing="3" Margin="0,0,0,8">
+                    <TextBlock Classes="h2" Text="Launch parameters" />
+                    <TextBlock Classes="muted" FontSize="11"
+                               Text="Applied to every launch of the active repository. Values with spaces are quoted automatically and the profile name is always quoted. Unchecked parameters are removed on save." />
+                </StackPanel>
+
+                <ScrollViewer Grid.Row="1">
+                    <ItemsControl x:Name="ParamList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:ParamRow">
+                                <Border Background="#12151A" CornerRadius="6" Padding="10,8" Margin="0,3">
+                                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="8">
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding Enabled, Mode=TwoWay}"
+                                                  VerticalAlignment="Center" />
+                                        <StackPanel Grid.Column="1" Spacing="2" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Subtitle}" FontSize="12" />
+                                            <TextBlock Text="{Binding Key}" Classes="muted" FontSize="10" />
+                                        </StackPanel>
+                                        <TextBox Grid.Column="2" Text="{Binding ValueText, Mode=TwoWay}"
+                                                 PlaceholderText="value" Width="180" FontSize="12"
+                                                 IsEnabled="{Binding NeedsValue}" />
+                                        <Button Grid.Column="3" Content="?" Padding="9,4" Click="OnRemoveParam"
+                                                ToolTip.Tip="Remove this parameter" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <StackPanel Grid.Row="2" Spacing="8" Margin="0,10,0,0">
+                    <TextBlock x:Name="EmptyHint" Classes="muted" FontSize="11" Text="No parameters yet." />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="SaveButton" Classes="accent" Content="Save parameters" Click="OnSave" />
+                        <TextBlock x:Name="StatusLine" Classes="muted" FontSize="12" VerticalAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Spacing="12">
+            <Border Classes="card">
+                <StackPanel Spacing="8">
+                    <TextBlock Classes="h2" Text="Add a known parameter" />
+                    <ComboBox x:Name="KnownBox" HorizontalAlignment="Stretch" SelectionChanged="OnKnownChanged" />
+                    <TextBlock x:Name="KnownHint" Classes="muted" FontSize="11" TextWrapping="Wrap" Text="" />
+                    <TextBox x:Name="KnownValueBox" PlaceholderText="value" />
+                    <ComboBox x:Name="ChoicesBox" HorizontalAlignment="Stretch" IsVisible="False" />
+                    <Button Content="Add / update" Click="OnAddKnown" />
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="8">
+                    <TextBlock Classes="h2" Text="Custom parameter" />
+                    <TextBox x:Name="CustomBox" PlaceholderText="-customFlag or -customKey=value" />
+                    <Button Content="Add" Click="OnAddCustom" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <Border Grid.Row="1" Grid.ColumnSpan="2" Classes="card" Padding="12">
+            <StackPanel Spacing="4">
+                <TextBlock Classes="muted" FontSize="11" Text="Preview (without -mod and server values)" />
+                <TextBlock x:Name="PreviewText" Classes="mono" TextWrapping="Wrap" Text="" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

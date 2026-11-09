@@ -1,0 +1,42 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Nimby.App.MainWindow"
+        Title="Nimby — Arma 3 addon manager"
+        Width="1120" Height="780"
+        MinWidth="900" MinHeight="600">
+    <Grid ColumnDefinitions="216,*">
+
+        <Border Grid.Column="0" Background="#12151A" BorderBrush="#1E232B" BorderThickness="0,0,1,0">
+            <Grid RowDefinitions="Auto,*,Auto" Margin="14,18">
+                <StackPanel Grid.Row="0" Spacing="3">
+                    <TextBlock Text="NIMBY" Classes="h1" FontSize="22" Foreground="#F0B429" />
+                    <TextBlock Text="Arma 3 addon manager" Classes="muted" FontSize="11" />
+                    <TextBlock Text="Swifty compatible · Workshop aware" Classes="muted" FontSize="10"
+                               Margin="0,2,0,0" />
+                </StackPanel>
+
+                <ListBox Grid.Row="1" x:Name="NavList" Margin="0,22,0,0" SelectionChanged="OnNavChanged">
+                    <ListBoxItem Content="Install" Tag="install" />
+                    <ListBoxItem Content="Repositories" Tag="repos" />
+                    <ListBoxItem Content="Configuration" Tag="config" />
+                    <ListBoxItem Content="Parameters" Tag="params" />
+                    <ListBoxItem Content="Stats" Tag="stats" />
+                    <ListBoxItem Content="Launch" Tag="launch" />
+                </ListBox>
+
+                <StackPanel Grid.Row="2" Spacing="4">
+                    <TextBlock x:Name="VersionText" Classes="muted" FontSize="10" Text="" TextWrapping="Wrap" />
+                    <TextBlock x:Name="CliText" Classes="muted" FontSize="10" Text="" TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="1" Padding="18,16">
+            <Grid RowDefinitions="*,Auto">
+                <ContentControl Grid.Row="0" x:Name="PageHost" />
+                <TextBlock Grid.Row="1" x:Name="FooterText" Classes="muted" FontSize="10"
+                           TextTrimming="CharacterEllipsis" Margin="0,10,0,0" Text="" />
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

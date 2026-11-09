@@ -1,0 +1,5 @@
+# Nimby build settings.
+# Windows hosts without MSVC use the GNU toolchain plus a MinGW-w64 toolchain
+# for the C parts (ring) and for dlltool/as. See scripts/build.ps1.
+[build]
+incremental = true

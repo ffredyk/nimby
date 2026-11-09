@@ -1,0 +1,96 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="using:Nimby.App.Models"
+             x:Class="Nimby.App.Views.ReposView">
+    <Grid RowDefinitions="Auto,*" RowSpacing="12" Margin="4">
+
+        <Border Grid.Row="0" Classes="card">
+            <StackPanel Spacing="10">
+                <TextBlock Classes="h2" Text="Add a repository" />
+                <Grid ColumnDefinitions="*,180,Auto" ColumnSpacing="8">
+                    <TextBox Grid.Column="0" x:Name="UrlBox"
+                             PlaceholderText="https://example.com/repo/main/" />
+                    <TextBox Grid.Column="1" x:Name="NameBox" PlaceholderText="Display name (optional)" />
+                    <Button Grid.Column="2" x:Name="AddButton" Classes="accent" Content="Add"
+                            Click="OnAdd" />
+                </Grid>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <TextBox Grid.Column="0" x:Name="AddPathBox"
+                             PlaceholderText="Subfolder under the workspace root (leave empty to derive it from the name)" />
+                    <Button Grid.Column="1" Content="Derive" Click="OnClearAddPath" />
+                </Grid>
+                <TextBlock Classes="muted" FontSize="11"
+                           Text="The workspace is a root: every repository installs into its own subfolder of it, so different communities never mix and can be updated independently. Nimby speaks the Swifty repository format, so any existing repo works unchanged." />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1" ColumnDefinitions="340,*" ColumnSpacing="12">
+            <Border Grid.Column="0" Classes="card">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    <TextBlock Grid.Row="0" Classes="h2" Text="Repositories" Margin="0,0,0,8" />
+                    <ListBox Grid.Row="1" x:Name="RepoList" SelectionChanged="OnSelectionChanged">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:RepoRow">
+                                <StackPanel Spacing="2">
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Url}" Classes="muted" FontSize="11"
+                                               TextTrimming="CharacterEllipsis" />
+                                    <TextBlock Text="{Binding PathText}" Classes="muted" FontSize="10"
+                                               TextTrimming="CharacterEllipsis" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,10,0,0">
+                        <Button x:Name="SelectButton" Content="Use this repo" Click="OnSelect" />
+                        <Button x:Name="RemoveButton" Content="Remove" Click="OnRemove" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Classes="card">
+                <ScrollViewer>
+                    <StackPanel Spacing="10">
+                        <TextBlock x:Name="DetailName" Classes="h1" Text="No repository selected" />
+                        <TextBlock x:Name="DetailUrl" Classes="muted" FontSize="12" Text="" />
+                        <Border CornerRadius="8" ClipToBounds="True" IsVisible="False" x:Name="BannerHost"
+                                MaxHeight="120">
+                            <Image x:Name="BannerImage" Stretch="UniformToFill" />
+                        </Border>
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Border Width="48" Height="48" CornerRadius="6" ClipToBounds="True"
+                                    Background="#0E1116">
+                                <Image x:Name="IconImage" Stretch="UniformToFill" />
+                            </Border>
+                            <StackPanel VerticalAlignment="Center" Spacing="2">
+                                <TextBlock x:Name="DetailSummary" Classes="h2" Text="—" />
+                                <TextBlock x:Name="DetailMeta" Classes="muted" FontSize="11" Text="" />
+                            </StackPanel>
+                        </StackPanel>
+                        <Border Background="#0E1116" CornerRadius="6" Padding="10">
+                            <StackPanel Spacing="6">
+                                <TextBlock Classes="muted" FontSize="11" Text="Subfolder of the workspace root" />
+                                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                                    <TextBox Grid.Column="0" x:Name="RepoPathBox"
+                                             PlaceholderText="Folder name, for example Synixe" />
+                                    <Button Grid.Column="1" Content="Hint" Click="OnBrowseRepoPath" />
+                                    <Button Grid.Column="2" x:Name="SavePathButton" Classes="accent"
+                                            Content="Apply" Click="OnApplyRepoPath" />
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Button Content="Derive from the name" Click="OnResetRepoPath" />
+                                    <TextBlock x:Name="RepoPathHint" Classes="muted" FontSize="11"
+                                               VerticalAlignment="Center" Text="" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock x:Name="DetailServers" Classes="muted" FontSize="12" Text="" />
+                        <TextBlock x:Name="DetailParameters" Classes="mono" FontSize="11" Text="" />
+                        <Button x:Name="RefreshButton" Content="Reload details" Click="OnReload" />
+                        <TextBlock x:Name="DetailStatus" Classes="muted" FontSize="11" Text="" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,17 @@
+# Rust
+/target
+**/*.rs.bk
+
+# .NET
+bin/
+obj/
+*.user
+.vs/
+
+# Session / local
+*.log
+.DS_Store
+
+dist/
+*.zip
+

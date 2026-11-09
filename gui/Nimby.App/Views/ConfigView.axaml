@@ -1,0 +1,86 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Nimby.App.Views.ConfigView">
+    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="12" Margin="4">
+
+        <Border Grid.Row="0" Classes="card">
+            <StackPanel Spacing="4">
+                <TextBlock Classes="h2" Text="Paths" />
+                <TextBlock Classes="muted" FontSize="11"
+                           Text="Nimby autodetects Steam and Arma 3. Override anything that lives on another drive." />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Classes="card">
+            <Grid ColumnDefinitions="140,*,Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto"
+                  ColumnSpacing="8" RowSpacing="10">
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Arma 3" VerticalAlignment="Center" />
+                <TextBox Grid.Row="0" Grid.Column="1" x:Name="ArmaBox" />
+                <Button Grid.Row="0" Grid.Column="2" Content="Browse…" Click="OnBrowseArma" />
+                <Button Grid.Row="0" Grid.Column="3" Content="Use detected" Click="OnUseDetectedArma" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Scratch folder" VerticalAlignment="Center" />
+                <TextBox Grid.Row="1" Grid.Column="1" x:Name="TempBox" />
+                <Button Grid.Row="1" Grid.Column="2" Content="Browse…" Click="OnBrowseTemp" />
+                <Button Grid.Row="1" Grid.Column="3" Content="Default" Click="OnClearTemp" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Shared mod store" VerticalAlignment="Center" />
+                <TextBox Grid.Row="2" Grid.Column="1" x:Name="SharedBox" />
+                <Button Grid.Row="2" Grid.Column="2" Content="Browse…" Click="OnBrowseShared" />
+                <Button Grid.Row="2" Grid.Column="3" Content="Disable" Click="OnClearShared" />
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Workspace root" VerticalAlignment="Center" />
+                <TextBox Grid.Row="3" Grid.Column="1" x:Name="WorkspaceBox" />
+                <Button Grid.Row="3" Grid.Column="2" Content="Browse…" Click="OnBrowseWorkspace" />
+                <Button Grid.Row="3" Grid.Column="3" Content="Default" Click="OnClearWorkspace" />
+            </Grid>
+        </Border>
+
+        <ScrollViewer Grid.Row="2">
+            <StackPanel Spacing="12">
+                <Border Classes="card">
+                    <StackPanel Spacing="10">
+                        <TextBlock Classes="h2" Text="Install behaviour" />
+                        <Grid ColumnDefinitions="180,*,40,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="10"
+                              RowSpacing="10">
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Link mode" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ModeBox" HorizontalAlignment="Stretch" />
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Parallel" VerticalAlignment="Center"
+                                       Margin="12,0,0,0" />
+                            <TextBox Grid.Row="0" Grid.Column="3" x:Name="ParallelBox" Width="70"
+                                     HorizontalAlignment="Left" />
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Parallel mods" VerticalAlignment="Center" />
+                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="ModParallelBox" Width="70"
+                                     HorizontalAlignment="Left" />
+                            <TextBlock Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Classes="muted"
+                                       FontSize="11" VerticalAlignment="Center"
+                                       Text="Mods installed at the same time; the download budget is split between them." />
+                            <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" x:Name="BattleyeBox"
+                                      Content="Launch with BattlEye" />
+                            <TextBlock Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Classes="muted"
+                                       FontSize="11" VerticalAlignment="Center"
+                                       Text="Auto picks dir-link, then overlay, then copy per mod." />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card">
+                    <StackPanel Spacing="6">
+                        <TextBlock Classes="h2" Text="Shared store" />
+                        <TextBlock Classes="muted" FontSize="11" TextWrapping="Wrap"
+                                   Text="The root holds one isolated subfolder per repository (renamed on the Repos tab). Every downloaded file is kept once in the shared folder and hardlinked into each repository folder. Content that already exists in the Steam Workshop cache is linked instead of copied." />
+                        <TextBlock x:Name="StoreSummary" Classes="mono" FontSize="11" Text="" />
+                        <TextBlock x:Name="ConfigPathText" Classes="muted" FontSize="10" Text="" />
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button x:Name="SaveButton" Classes="accent" Content="Save settings" Click="OnSave" />
+                    <TextBlock x:Name="StatusLine" Classes="muted" FontSize="12" VerticalAlignment="Center"
+                               Text="" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

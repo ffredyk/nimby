@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/gui/">
+    <Project Path="gui/Nimby.App/Nimby.App.csproj" />
+  </Folder>
+</Solution>
