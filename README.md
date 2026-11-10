@@ -178,6 +178,12 @@ Nimby is free software under the **GNU General Public License v3.0 or later**. T
 corresponding source of every released binary is this repository; see [LICENSE](LICENSE) and
 [NOTICE](NOTICE).
 
+Attribution is a licence condition, not a request: the **additional terms under GPL-3.0
+section 7(b)** in [LICENSE-ADDITIONAL-TERMS.md](LICENSE-ADDITIONAL-TERMS.md) require every
+derivative to keep the copyright notice, the credit **ffredyk** and a link to
+[github.com/ffredyk/nimby](https://github.com/ffredyk/nimby) in its About/Credits screen, its
+version or about command output, its documentation and the source files it modifies.
+
 The name "Nimby", the app icon and the ffredyk mark are brand assets and are **not** covered by the
 GPL — they may be used to refer to unmodified Nimby builds only. Third-party components (Avalonia,
 .NET, the Rust crates) are listed in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md), with the

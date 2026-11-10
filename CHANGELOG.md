@@ -53,7 +53,10 @@ repositories, shipping as a portable Windows application (GUI plus CLI).
 - **Portable configuration** — configuration and the hash cache live in `data\`
   next to the executable when that folder is writable, falling back to
   `%APPDATA%\Nimby`. `NIMBY_CONFIG` overrides both.
-- **Licensing and attribution** — GPL-3.0-or-later, `NOTICE`,
+- **Licensing and attribution** — GPL-3.0-or-later with additional terms under
+  section 7(b) that require every derivative to keep the copyright notice, the
+  ffredyk credit and the repository link in its About/Credits screen, version
+  output and documentation; `NOTICE`, `LICENSE-ADDITIONAL-TERMS.md`,
   `THIRD-PARTY-NOTICES.md` with licence texts in `LICENSES/`, an About page with
   the website and source links, and a credit line in the GUI and in
   `nimby doctor`.

@@ -156,7 +156,7 @@
                 <StackPanel Spacing="6">
                     <TextBlock Classes="h2" Text="Source code" />
                     <TextBlock Classes="feature" TextWrapping="Wrap"
-                               Text="Nimby is free software under the GNU General Public License, version 3 or later. The licence is satisfied in full: the complete corresponding source for every released build is published in the public repository, including the Rust core, the CLI and this Avalonia front end." />
+                               Text="Nimby is free software under the GNU GPL version 3 or later, and the complete corresponding source of every released build is published in this repository." />
                     <Button Classes="link" Content="github.com/ffredyk/nimby" Click="OnOpenRepository"
                             HorizontalAlignment="Left" />
                 </StackPanel>

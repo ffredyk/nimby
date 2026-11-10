@@ -18,7 +18,7 @@ public partial class AboutView : UserControl, IRefreshable
         InitializeComponent();
 
         VersionText.Text = ShortVersion();
-        BuildText.Text = $"Build {BuildDate()} · Windows · GPL-3.0-or-later";
+        BuildText.Text = $"Build {BuildDate()} · Windows · GPL-3.0-or-later · © 2026 ffredyk";
     }
 
     /// <summary>"0.9.0" from the assembly, so the About page and the sidebar agree.</summary>

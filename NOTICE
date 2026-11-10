@@ -24,6 +24,17 @@ the source-offer requirement of GPL-3.0 section 6 for the binaries distributed
 from its Releases page. The Rust workspace, the Avalonia front end, the build
 and packaging scripts and the documentation are all part of it.
 
+Additional terms (GPL-3.0 section 7(b))
+--------------------------------------
+
+Nimby is licensed under the GNU GPL version 3 or later together with the
+additional terms in LICENSE-ADDITIONAL-TERMS.md: anyone who conveys Nimby or a
+work based on it must keep the copyright notice, the author credit `ffredyk`
+and a link to https://github.com/ffredyk/nimby or https://nimby.ffredyk.cz in
+the derivative's About/Credits screen, its version/about command output, its
+documentation and the source files they modify. Those terms are a condition of
+the licence, not an extra permission, and they take no GPL freedom away.
+
 Brand assets
 ------------
 

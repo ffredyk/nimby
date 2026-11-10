@@ -82,7 +82,7 @@ Delete config.json to start from scratch. If this folder is read-only (for
 example under Program Files), Nimby falls back to %APPDATA%\Nimby automatically.
 '@
 
-    foreach ($file in 'LICENSE', 'NOTICE', 'THIRD-PARTY-NOTICES.md', 'CHANGELOG.md', 'README.md') {
+    foreach ($file in 'LICENSE', 'LICENSE-ADDITIONAL-TERMS.md', 'NOTICE', 'THIRD-PARTY-NOTICES.md', 'CHANGELOG.md', 'README.md') {
         if (Test-Path $file) { Copy-Item $file $stage }
     }
     if (Test-Path 'LICENSES') {

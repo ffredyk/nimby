@@ -45,7 +45,7 @@ then click past SmartScreen.
 | `docs\` | This tutorial, the repository format notes, the screenshots. |
 | `LICENSES\` | Licence texts of the third-party components. |
 | `README.md`, `CHANGELOG.md` | Project summary and release notes. |
-| `LICENSE`, `NOTICE`, `THIRD-PARTY-NOTICES.md` | Licence and attribution. |
+| `LICENSE`, `LICENSE-ADDITIONAL-TERMS.md`, `NOTICE`, `THIRD-PARTY-NOTICES.md` | Licence, attribution terms and third-party notices. |
 
 Keep `Nimby.exe` and `bin\nimby.exe` together — the CLI sits in `bin` because Windows
 cannot hold both `Nimby.exe` and `nimby.exe` in one folder. The GUI looks for
@@ -448,6 +448,13 @@ The name "Nimby", the app icon and the ffredyk mark are brand assets and are **n
 covered by the GPL; they may be used only to refer to unmodified Nimby builds.
 Third-party components (Avalonia, .NET, the Rust crates) are listed in
 `THIRD-PARTY-NOTICES.md`.
+
+**Forks must keep the credit.** Nimby carries additional terms under GPL-3.0
+section 7(b) (`LICENSE-ADDITIONAL-TERMS.md`): any derivative has to keep the copyright
+notice, the author name `ffredyk` and a link to <https://github.com/ffredyk/nimby> in its
+About/Credits screen, in the output of its version or about command, in its
+documentation and in the source files it modifies. Those terms are a licence condition,
+not an extra permission, and they do not restrict any GPL freedom.
 
 Nimby is an independent project, not affiliated with Bohemia Interactive, Steam or the
 Swifty team.
