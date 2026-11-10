@@ -1,7 +1,7 @@
 # Swifty repository format (verified)
 
 Everything below was reverse-checked against a live repository
-(`https://cdn.synixe.contractors/repo/main/`, Swifty client 3.4.1, repo
+(Swifty client 3.4.1, repo
 `version` 3.2.0.0) and a local Arma 3 install. Values are reproduced by the test
 suite in `crates/nimby-core`.
 
