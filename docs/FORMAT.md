@@ -22,14 +22,14 @@ falls back to a full `GET`. Paths are percent-encoded per segment.
 
 ```json
 {
-  "repoName": "Synixe Contractors",
+  "repoName": "Example",
   "checksum": "BA3E594DA3DFBD2EED6627637B88404F64640EE0",
   "clientParameters": "-skipIntro -noSplash -noPause",
   "version": "3.2.0.0",
   "requiredMods": [{ "modName": "@cba_ws", "checkSum": "DD39F3C34318C8CB5950E0B785FBCB08", "enabled": true }],
   "optionalMods": [],
   "servers": [
-    { "name": "Contracts", "address": "arma.synixe.contractors", "port": "2302", "password": "…", "battleEye": false }
+    { "name": "Normal", "address": "redacted", "port": "2302", "password": "", "battleEye": false }
   ]
 }
 ```
